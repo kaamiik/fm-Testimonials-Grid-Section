@@ -75,7 +75,7 @@ blockquote {
 
 /* Set core body defaults */
 body {
-  min-height: 100vh;
+  // min-height: 100vh;
   line-height: 1.5;
 }
 
@@ -107,7 +107,7 @@ main {
   margin-block: rem(70);
 
   @include breakpoint(large) {
-    margin-block: rem(0);
+    margin-block: rem(165);
   }
 }
 
