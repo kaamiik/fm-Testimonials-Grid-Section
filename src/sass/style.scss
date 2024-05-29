@@ -1,0 +1,265 @@
+@use "sass:math";
+
+// Source: https://css-tricks.com/snippets/sass/px-to-em-functions/
+// Converting pixel to rem
+@function rem($pixels, $context: 16) {
+  @return (math.div($pixels, $context)) * 1rem;
+}
+
+// Colors
+$clr-primary-violet: hsl(263, 55%, 52%);
+$clr-primary-light-blue: hsl(210, 46%, 95%);
+$clr-primary-grayish-blue: hsl(217, 19%, 35%);
+$clr-primary-blackish-blue: hsl(219, 29%, 14%);
+$clr-primary-white: hsl(0, 0%, 100%);
+
+$clr-neutral-light-gray: hsl(0, 0%, 81%);
+$clr-neutral-light-grayish-blue: hsl(210, 46%, 95%);
+
+// Font family
+$ff-barlow: "Barlow Semi Condensed", sans-serif;
+
+// Font sizes
+$fs-700: rem(20);
+$fs-300: rem(13);
+$fs-200: rem(11);
+
+// Font weights
+$fw-500: 500;
+$fw-600: 600;
+
+// Sizes
+$size-16: rem(16);
+$size-18: rem(18);
+$size-24: rem(26);
+$size-32: rem(32);
+
+// Breakpoints
+// 768px, 1200px, 1400px
+$breakpoints-up: (
+  "medium": "40rem",
+  "large": "64rem",
+  "xlarge": "90rem",
+);
+
+@mixin breakpoint($size) {
+  @media (min-width: map-get($breakpoints-up, $size)) {
+    @content;
+  }
+}
+
+@mixin background($bg, $color: $clr-primary-white) {
+  background-color: $bg;
+  color: $color;
+}
+
+// CSS reset
+/* Box sizing rules */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+/* Remove default margin in favour of better control in authored CSS */
+body,
+h1,
+h2,
+p {
+  margin-block-end: 0;
+}
+
+blockquote {
+  margin: 0;
+}
+
+/* Set core body defaults */
+body {
+  min-height: 100vh;
+  line-height: 1.5;
+}
+
+/* Set shorter line heights on headings and interactive elements */
+h1,
+h2 {
+  line-height: 1.1;
+}
+
+/* Make images easier to work with */
+img,
+picture {
+  max-width: 100%;
+  display: block;
+}
+
+// Base Styles
+body {
+  margin: 0;
+  font-size: $fs-300;
+  font-weight: $fw-500;
+  background-color: $clr-primary-light-blue;
+  font-family: $ff-barlow;
+  display: grid;
+  place-items: center;
+}
+
+main {
+  margin-block: rem(70);
+
+  @include breakpoint(large) {
+    margin-block: rem(0);
+  }
+}
+
+// Footer
+.attribution {
+  margin-top: auto;
+  font-size: $fs-200;
+  text-align: center;
+}
+.attribution a {
+  color: hsl(228, 45%, 44%);
+}
+
+// Composition
+.container {
+  width: min(100% - rem(48), rem(1110));
+  margin-inline: auto;
+}
+
+.testimonial-grid {
+  display: grid;
+  gap: rem(24);
+  grid-auto-columns: 1fr;
+  grid-template-areas:
+    "one"
+    "two"
+    "three"
+    "four"
+    "five";
+
+  @include breakpoint(large) {
+    // grid-template-columns: repeat(4, 1fr);
+    grid-template-areas:
+      "one one two five"
+      "three four four five";
+    gap: rem(24) rem(30);
+  }
+}
+
+// Utility
+.bg-violet {
+  @include background($clr-primary-violet);
+  background-image: url(../../images/bg-pattern-quotation.svg);
+  background-repeat: no-repeat;
+  background-position: top right rem(24);
+  --border-width: 2px;
+  --border-color: #a775f1;
+
+  @include breakpoint(large) {
+    background-position: top right rem(80);
+  }
+}
+
+.bg-grayish-blue {
+  @include background($clr-primary-grayish-blue);
+}
+
+.bg-white {
+  @include background($clr-primary-white, $clr-primary-grayish-blue);
+}
+
+.bg-blackish-blue {
+  @include background($clr-primary-blackish-blue);
+  --border-width: 2px;
+  --border-color: #733fc8;
+}
+
+.visually-hidden {
+  border: 0;
+  clip: rect(0 0 0 0);
+  height: auto;
+  margin: 0;
+  overflow: hidden;
+  padding: 0;
+  position: absolute;
+  width: 1px;
+  white-space: nowrap;
+}
+
+// Block
+.section {
+  padding: rem(32);
+  border-radius: rem(8);
+  box-shadow: 40px 60px 50px -47px rgb($clr-primary-grayish-blue, 24.74%);
+  @include breakpoint(large) {
+    &:nth-child(1) {
+      // grid-column: 1 / span 2;
+      grid-area: one;
+    }
+    &:nth-child(2) {
+      // grid-column: 3;
+      grid-area: two;
+    }
+    &:nth-child(3) {
+      // grid-column: 1;
+      grid-area: three;
+    }
+    &:nth-child(4) {
+      // grid-column: span 2;
+      grid-area: four;
+    }
+
+    &:nth-child(5) {
+      // grid-column: 4;
+      // grid-row: 1 / span 2;
+      grid-area: five;
+    }
+  }
+}
+
+.profile {
+  display: flex;
+  gap: rem(17);
+  align-items: center;
+
+  .profile-info {
+    .profile-name {
+      margin: 0;
+      font-size: $fs-300;
+    }
+
+    p {
+      margin: 0;
+      opacity: 0.5;
+    }
+  }
+
+  .profile-pic {
+    order: -1;
+    border-radius: 100vh;
+    width: auto;
+    height: 28px;
+    object-fit: cover;
+    object-position: center;
+    border: var(--border-width) solid var(--border-color);
+  }
+}
+
+.section-heading {
+  font-weight: $fw-600;
+  font-size: $fs-700;
+  line-height: 1.3;
+}
+
+.section-content {
+  opacity: 0.7;
+
+  &::before {
+    content: "“";
+  }
+
+  &::after {
+    content: "”";
+  }
+}
