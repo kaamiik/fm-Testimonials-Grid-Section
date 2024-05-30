@@ -99,6 +99,8 @@ body {
   font-weight: $fw-500;
   background-color: $clr-primary-light-blue;
   font-family: $ff-barlow;
+  display: grid;
+  place-items: center;
   min-height: 100vh;
 }
 
@@ -106,7 +108,7 @@ main {
   margin-block: rem(70);
 
   @include breakpoint(large) {
-    margin-block: rem(164);
+    margin-block: rem(0);
   }
 }
 
